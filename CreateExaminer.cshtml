@@ -1,0 +1,496 @@
+﻿@using Extraback.AS.Web.Models;
+@model ExaminerModel
+@{
+    ViewBag.Title = "Create Examiner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <style>
+        .well {
+            padding: 0px;
+        }
+
+        .form-group {
+            padding-left: 10px;
+        }
+    </style>
+}
+@using (Html.BeginForm("CreateExaminer", "Examiner", FormMethod.Post, new { id = "frmEdit", @class = "form-horizontal well", role = "form" }))
+{
+    string menuid = Request.QueryString["menuid"];
+    <input id="menuid" name="menuid" value="@menuid" type="hidden" />
+
+    var emailpat = @"^[A-Za-z0-9!#$%&amp;&#39;*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&amp;&#39;*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?";
+    var usernamepatt = @"^([a-zA-Z0-9]{6,25})$";
+    var pwd = @"^([a-zA-Z0-9!@#$%&*]{6,15})$";
+
+
+    <fieldset class="form-inline">
+        <legend class="text-left">
+            @ViewBag.Title
+            <div class="pull-right">
+                @Html.ActionLink("Back to List", "ExaminerList", "Examiner", new { menuid = Request.QueryString["menuid"] }, new { @class = "btn btn-primary btn-xs" })
+            </div>
+        </legend>
+        @if (Model.Message != null)
+        {
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="alert alert-warning">
+                        <strong>Success!</strong> @Model.Message
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+        <div class="col-lg-12">
+
+
+            <div class="col-lg-10 col-lg-offset-1">
+
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i style="padding-right:12px;"><b>Name</b></i></span>
+
+                            <select id="ddlTitle" class="form-control" name="ETitle" data-val-number="Please select title"
+                                    data-val="true">
+                                <option> Select Title </option>
+                                <option value="1">Mr</option>
+                                <option value="2">Mrs</option>
+                                <option value="3">Ms</option>
+                                <option value="4">Miss</option>
+                            </select>
+                            <br />
+                            <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="ETitle">
+                            </span>
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+
+                        <input type="text" class="form-control" id="txtGivenName" maxlength="150" data-val="true"
+                               data-val-required="Please specify given name." name="GivenName" placeholder="Given Name">
+                        <br />
+                        <span class="field-validation-valid" data-valmsg-for="GivenName" data-valmsg-replace="true">
+                        </span>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="txtMiddleName" maxlength="150" name="MiddleName" placeholder="Middle Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="txtFamilyName" name="FamilyName" maxlength="150" placeholder="Family Name" />
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="col-lg-12" style="margin-top:20px;">
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i><b>Gender</b></i></span>
+
+                            <select id="ddlGender" class="form-control" name="Gender" data-val-number="Please select title" data-val="true" style="width:670px; max-width:670px;">
+                                <option> Select Gender</option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                            </select>
+                            <br />
+                            <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="ddlGender">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-12" style="margin-top:20px;">
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i style="padding-right:0px;"><b>Address</b></i></span>
+
+                            <input type="text" class="form-control" id="Address1" maxlength="250" data-val="true" value="@Model.Address1"
+                                   data-val-required="Please specify address." name="Address1" placeholder="Address Line 1" style="width:300px; max-width:300px;">
+                            <br />
+                            <span class="field-validation-valid" data-valmsg-for="Address1" data-valmsg-replace="true">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="Address2" name="Address2" placeholder="Address Line 2" value="@Model.Address2"
+                               maxlength="150" style="width:355px; max-width:355px;">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-12" style="margin-top:20px;">
+
+            <div class="col-lg-10 col-lg-offset-1">
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i style="padding-right:30px;"><b>City</b></i></span>
+                            <input type="text" class="form-control" id="City" name="City" maxlength="50" value="@Model.City" placeholder="City" style="width:300px; max-width:300px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input id="txtPinCode" name="PinCode" class="form-control" type="text" maxlength="8"
+                               placeholder="Zip / Pin code" data-val-regex-pattern="^[0-9]\d{5,7}$" data-val-regex="Please enter valid zip / pin code"
+                               data-val="true" style="width:350px; max-width:350px;" />
+                        <br />
+                        <span class="field-validation-error" data-valmsg-replace="true" data-valmsg-for="PinCode">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-lg-12" style="margin-top:20px;">
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i style="padding-right:20px;"><b>State</b></i></span>
+                            <input type="text" class="form-control" id="State" name="State" maxlength="50" value="@Model.State" placeholder="State" style="width:300px; max-width:300px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <select id="CountryID" class="form-control" name="CountryID" style="width:350px; max-width:350px;"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12" style="margin-top:20px;">
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i style="padding-right:0px;"><b>Contact</b></i></span>
+                            <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                            <input id="txtMobileNo" name="MobileNo" class="form-control" type="text" value="@Model.MobileNo"
+                                   placeholder="Mobile Number (+91)" data-val-regex-pattern="^[0-9]\d{9,11}$" data-val-regex="Please enter valid mobile no."
+                                   data-val="true" min="14" maxlength="14" style="width:270px; max-width:270px;" />
+                            <br />
+                            <span class="field-validation-error" data-valmsg-replace="true" data-valmsg-for="MobileNo">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            <input id="EmailID" class="form-control" type="text" placeholder="Email ID" name="EmailID" data-val-required="Email id is required."
+                                   data-val-regex="Please provide valid email." data-val-regex-pattern="@emailpat" data-val="true" value="@Model.EmailID" style="width:310px; max-width:310px;" />
+                            <span id="dvEmailStatus"></span>
+                            <br />
+                            <span class="field-validation-error" data-valmsg-replace="true" data-valmsg-for="EmailID">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="col-lg-12" style="margin-top:20px;">
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <input id="txtUserName" class="form-control" type="text" value="@Model.UserName" placeholder="User Name" name="UserName"
+                                   data-val-required="Please specify user name." data-val="true"
+                                   data-val-regex-pattern="@usernamepatt" data-val-regex="please provide valid user name"
+                                   data-val-length="User name should be 6 characters long." data-val-length-min="6" style="width:250px; max-width:250px;" />
+                            <br />
+                            <span class="field-validation-error" data-valmsg-replace="true" data-valmsg-for="UserName">
+                            </span>
+                            <span id="dvUserNameStatus"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                           
+                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                            <input id="Password" type="password" name="Password" data-val-required="Please specify password"
+                                   data-val-regex-pattern="@pwd" data-val-regex="please provide valid password"
+                                   data-val-length="Password should be 6 characters long." data-val-length-min="6"
+                                   class="form-control" placeholder="Password" data-val="true" style="width:175px; max-width:175px;" />
+                            <br />
+                            <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="Password"></span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                           
+                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                            <input id="ConfirmPassword" type="password" name="ConfirmPassword" class="form-control"
+                                   data-val-required="Please specify confirm password"
+                                   placeholder="Confirm Password" data-val-equalto-other="*.Password"
+                                   data-val-equalto="The password and confirmation password do not match."
+                                   data-val="true" style="width:175px; max-width:175px;" />
+                            <br />
+                            <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="ConfirmPassword"></span>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="col-lg-12" style="margin-top:20px;">
+
+            <div class="col-lg-10 col-lg-offset-1">
+
+
+
+            </div>
+        </div>
+
+        <div class="col-lg-12 text-center" style="padding-top:20px;">
+
+            <input type="submit" class="btn btn-primary btn-green" value="Create Examiner" />
+            <input id="btnCountryID" name="CountryID" value="@Model.CountryID" type="hidden" />
+            <input id="btnTitle" value="@Model.ETitle" type="hidden" />
+            <input id="CGender" name="CGender" type="hidden" />
+        </div>
+
+
+        @*<div class="form-group">
+
+
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">
+                    Confirm password<sup>*</sup>
+                </label>
+                <div class="col-md-8">
+                    <input id="ConfirmPassword" type="password" name="ConfirmPassword" class="form-control"
+                           data-val-required="Please specify confirm password"
+                           placeholder="Confirm Password" data-val-equalto-other="*.Password"
+                           data-val-equalto="The password and confirmation password do not match."
+                           data-val="true" />
+                    <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="ConfirmPassword"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label">
+                    &nbsp;
+                </label>
+                <div class="col-md-8">
+
+                </div>
+            </div>*@
+    </fieldset>
+}
+<script type="text/javascript">
+    $(function () {
+        var stkid = $("#btnCountryID").val();
+        $.getJSON('@Url.Action("GetAllCountries", "ControlPanel")', function (result) {
+            var ddl = $('#CountryID');
+            ddl.empty();
+            ddl.append('<option>Select Country</option>');
+            $(result).each(function () {
+                if (stkid == this.Value) {
+                    ddl.append(
+                    $('<option/>',
+                     {
+                         value: this.Value, selected: true
+                     }).html(this.Text)
+                  );
+                }
+                else {
+                    ddl.append(
+                    $('<option/>',
+                     {
+                         value: this.Value
+                     }).html(this.Text)
+                  );
+                }
+            });
+        });
+    });
+    $(function () {
+        var shTitle = $("#btnTitle").val();
+        $("#ddlTitle option").each(function () {
+            if ($(this).html() == shTitle)
+                $(this).attr("selected", "selected");
+        });
+
+    });
+
+
+    //Title Selection Change
+
+    $(function () {
+        $("#ddlTitle").change(function () {
+
+            var Title = $("#ddlTitle").val();
+
+            if (Title == "1" || Title == "5") {
+
+                $("#ddlGender").val(1);
+                $("#CGender").val(1);
+                $("#ddlGender").attr('disabled', 'disabled');
+
+            }
+            else if (Title == "2" || Title == "3" || Title == "4") {
+                $("#ddlGender").val(2);
+                $("#ddlGender").attr('disabled', 'disabled');
+                $("#CGender").val(2);
+
+            }
+
+            else {
+                $("#ddlGender").val("--Please Select --");
+                $("#ddlGender").removeAttr('disabled');
+            }
+        })
+    });
+
+
+    $(function () {
+        $("#ddlGender").change(function () {
+            var gender = $("#ddlGender").val();
+            $("#CGender").val(gender);
+        });
+    });
+
+
+
+</script>
+
+<script type="text/javascript">
+    ////Check UserName
+    var isValid = false;
+    function UserNameCheck() {
+        if ($('#txtUserName').valid()) {
+            $.ajax({
+                type: 'GET',
+                //url: '~/Account/ValidateUserName',
+                url: '@Url.Action("ValidateUserName", "Account")',
+                data: { userName: $('#txtUserName').val() },
+                cache: false,
+                beforeSend: function () {
+                    $('#dvUserNameStatus').html('<img src=@Href("~/Content/Images/processing.gif") alt="" style="width:15px;"/>');
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        $('#dvUserNameStatus').html('<img src=@Href("~/Content/Images/correct.jpg") alt="" style="width:15px;"/><span style="color:Green">User-Name is available.</span>');
+                        isValid = true;
+                    }
+                    else {
+                        $('#dvUserNameStatus').html('<img src=@Href("~/Content/Images/wrong.jpg") alt="" style="width:15px;"/><span style="color:red">User-Name already Exist.</span>');
+                        isValid = false;
+                        document.getElementById("txtUserName").value = "";
+                    }
+                },
+                complete: function () { }
+            });
+        }
+        else {
+            $('#dvUserNameStatus').html('<img src=@Href("~/Content/Images/wrong.jpg") alt=""/>');
+        }
+    }
+    $('#txtUserName').focusout(function () {
+        $('#dvUserNameStatus').empty();
+        UserNameCheck();
+    });
+
+
+    /////Check Emailid
+    var isEmailValid = false;
+    function UserEmailCheck() {
+        if ($('#EmailID').valid()) {
+            $.ajax({
+                type: 'GET',
+                //url: 'Account/ValidateUserEmail',
+                url: '@Url.Action("ValidateUserEmail", "Account")',
+                data: { emailid: $('#EmailID').val() },
+                cache: false,
+                beforeSend: function () {
+                    $('#dvEmailStatus').html('<img src=@Href("~/Content/Images/processing.gif") alt="" style="width:15px;"/>');
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        $('#dvEmailStatus').html('<img src=@Href("~/Content/Images/correct.jpg") alt="" style="width:15px;"/><span style="color:Green">Email-id is available.</span>');
+                        isEmailValid = true;
+                    }
+                    else {
+                        $('#dvEmailStatus').html('<img src=@Href("~/Content/Images/wrong.jpg") alt="" style="width:15px;"/><span style="color:red">Email-id already Exist.</span>');
+                        isEmailValid = false;
+                        document.getElementById("EmailID").value = "";
+                    }
+                },
+                complete: function () { }
+            });
+        }
+        else {
+            $('#dvEmailStatus').html('<img src=@Href("~/Content/Images/wrong.jpg") alt=""/>');
+        }
+    }
+    $('#EmailID').focusout(function () {
+        $('#dvEmailStatus').empty();
+        UserEmailCheck();
+    });
+
+
+</script>
+
+
+
